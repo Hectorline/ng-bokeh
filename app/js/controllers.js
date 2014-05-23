@@ -5,8 +5,6 @@
 angular.module('myApp.controllers', [])
     .controller('MyCtrl1', ['$scope', function($scope) {
         var r = new Bokeh.Random(123456789);
-
-
         var x = _.map(_.range(4000), function () {return r.randf()*100;});
         var y = _.map(_.range(4000), function () {return r.randf()*100;});
 
@@ -28,13 +26,13 @@ angular.module('myApp.controllers', [])
                 y: 'y',
                 radius: 'radius',
                 radius_units: 'data',
-                fill_color: 'color',
+                fill_color: '$plotColor',
                 fill_alpha: 0.6,
                 line_color: null
             }],
             
             options : {
-                title: "Scatter Demo",
+                title: "$title",
                 dims: [600, 600],
                 xrange: [0, 100],
                 yrange: [0, 100],
@@ -45,30 +43,15 @@ angular.module('myApp.controllers', [])
             }};
 
         $scope.make_blue = function () {
-            $scope.outer_renderers = [{
-                type: 'circle',
-                x: 'x',
-                y: 'y',
-                radius: 'radius',
-                radius_units: 'data',
-                fill_color: 'blue',
-                fill_alpha: 0.6,
-                line_color: null
-            }];
+            $scope.title="blue";
+            $scope.plotColor="blue";
         };
 
-
+        $scope.title="orange";
+        $scope.plotColor="orange";
         $scope.make_red = function () {
-            $scope.outer_renderers = [{
-                type: 'circle',
-                x: 'x',
-                y: 'y',
-                radius: 'radius',
-                radius_units: 'data',
-                fill_color: 'red',
-                fill_alpha: 0.6,
-                line_color: null
-            }];
+            $scope.title="red";
+            $scope.plotColor="red";
         };
 
 

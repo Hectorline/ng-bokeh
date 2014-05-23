@@ -27,16 +27,20 @@ angular.module('myApp.directives', []).
                     var options2 = options.options;
                     scope.plot = Bokeh.Plotting.make_plot(scatter, data, options2);
                     Bokeh.Plotting.show(scope.plot, elem);};
-                makePlot();
 
+                scope.$parent.$watch("title", function(newVal){
+                    console.log("newVal", newVal);
+                    
+                });
                 var compileOptions = function(opt){
                     var newOpt = opt;
                     var scopeVars = [];
                     var grabScopeVar = function(scopeVarName, path){
+                        console.log("grabScopeVar", scopeVarName, path);
                         var actualVal = scope.$parent[scopeVarName];
                         var parentObj = opt;
                         _.each(path.slice(0,path.length-1), function(k){
-                            parentObj = parentObj[k]
+                            parentObj = parentObj[k];
                         });
                         parentObj[path[path.length-1]] = actualVal;
                     };
@@ -49,27 +53,33 @@ angular.module('myApp.directives', []).
                     walk(opt, 
                          function(root, val, path){
                              if(typeof(val) == "string"){
+                                 
                                  if(val.length>0 && val[0]=="$"){
+                                     
                                      handleScopeVar(val.slice(1), path);}}});
                 };
                 scope.$watch('options', 
-                             function(a,b,c){
-                                 debugger;
-                                 compileOptions();});
+                             function(newVal){
+                                 compileOptions(newVal);
+                             });
             }
     }});
 
 var walk = function (oobj, visitor, obj, path){
+
     if(typeof(obj)=="undefined"){
         obj = oobj;
         path = [];
     }
-    _.each(_.keys(obj), function(k){
-        var tempPath = path.concat([k]);
-        visitor(oobj, obj[k], tempPath);
-        if(typeof(obj[k])=="obj") {
-            walk(oobj, visitor, obj[k], tempPath);}
-    });
+    if(obj==null) {
+        return;
+    }
+        _.each(_.keys(obj), function(k){
+            var tempPath = path.concat([k]);
+            visitor(oobj, obj[k], tempPath);
+            if(typeof(obj[k])=="object") {
+                walk(oobj, visitor, obj[k], tempPath);}
+        });
 };
 
 walk(
@@ -77,3 +87,4 @@ walk(
     function(o, val, tPath){
         console.log(o, val, tPath);
     });
+
