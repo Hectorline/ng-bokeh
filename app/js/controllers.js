@@ -15,33 +15,35 @@ angular.module('myApp.controllers', [])
             var g =  (Math.floor(30+2*val[1])).toString();
             return "rgb(" + r + "," + g + ",150)";});
         
-        $scope.outer_data = {
-            x: x,
-            y: y,
-            radius: _.map(_.range(4000), function () {return r.randf()+0.3;}),
-            color: color
-        };
-        $scope.outer_renderers = [{
-            type: 'circle',
-            x: 'x',
-            y: 'y',
-            radius: 'radius',
-            radius_units: 'data',
-            fill_color: 'color',
-            fill_alpha: 0.6,
-            line_color: null
-        }];
+        $scope.options = {
+            data : {
+                x: x,
+                y: y,
+                radius: _.map(_.range(4000), function () {return r.randf()+0.3;}),
+                color: color
+            },
+            renderers : [{
+                type: 'circle',
+                x: 'x',
+                y: 'y',
+                radius: 'radius',
+                radius_units: 'data',
+                fill_color: 'color',
+                fill_alpha: 0.6,
+                line_color: null
+            }],
+            
+            options : {
+                title: "Scatter Demo",
+                dims: [600, 600],
+                xrange: [0, 100],
+                yrange: [0, 100],
+                xaxes: "min",
+                yaxes: "min",
+                tools: true,
+                legend: false
+            }};
 
-        $scope.outer_options = {
-            title: "Scatter Demo",
-            dims: [600, 600],
-            xrange: [0, 100],
-            yrange: [0, 100],
-            xaxes: "min",
-            yaxes: "min",
-            tools: true,
-            legend: false
-        };
         $scope.make_blue = function () {
             $scope.outer_renderers = [{
                 type: 'circle',
